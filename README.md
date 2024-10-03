@@ -2,188 +2,61 @@
 # Laravel Real Estate API
 
 ## Descripción
+Esta API REST permite gestionar propiedades inmobiliarias, personas y solicitudes de visita. Cada entidad tiene un CRUD completo y están relacionadas entre sí y garantiza la autenticación de usuarios.
 
-Esta API REST permite gestionar propiedades inmobiliarias, personas y solicitudes de visita. Proporciona operaciones CRUD para cada entidad y garantiza la autenticación de usuarios.
+## Requerimientos
 
-## Requisitos
+### 1. Propiedad:
+- Identificador único (`id`).
+- Dirección (`direccion`).
+- Ciudad (`ciudad`).
+- comuna (`comuna`). --agregado
+- Precio (`precio`).
+- Descripción (`descripcion`).
+- CRUD completo implementado.
 
-- PHP >= 8.1
-- Laravel >= 10.10
-- MySQL
+### 2. Persona:
+- Identificador único (`id`).
+- Nombre completo (`nombre`).
+- Correo electrónico (`email`).
+- Número de teléfono (`telefono`).
+- CRUD completo implementado.
 
-## Instalación
+### 3. Solicitud de Visita:
+- Identificador único (`id`).
+- Identificador de la persona que solicita la visita (`persona_id`).
+- Identificador de la propiedad que se desea visitar (`propiedad_id`).
+- Fecha programada para la visita (`fecha_visita`).
+- Comentarios adicionales (`comentarios`).
+- CRUD completo implementado.
+- Posibilidad de asociar una solicitud a una propiedad existente y a una persona como contacto.
 
-1. **Clonar el repositorio:**
+## Especificaciones Técnicas
+- **Repositorio**: Este proyecto se encuentra en un repositorio público de GitHub llamado `laravel-real-estate-api`.
+- **Estructura del Proyecto**: El proyecto sigue las convenciones estándar de Laravel.
+- **Rutas y Controladores**: Rutas y controladores necesarios para manejar las operaciones CRUD de las tres entidades están implementados.
+- **Migraciones y Modelos**: Se proporcionan migraciones para crear las tablas necesarias y los modelos Eloquent para cada entidad.
+- **Relaciones**: Las relaciones entre las entidades `Persona`, `Propiedad` y `Solicitud de Visita` están configuradas usando Eloquent.
 
-   ```bash
-   git clone https://github.com/NilviaSM/laravel-real-estate-api
-   cd laravel-real-estate-api
-   ```
+## Puntos Extra
+- **Validación**: Se asegura la validación adecuada de los datos al crear o actualizar registros.
+- **Documentación**: Este archivo README.md describe el proyecto y detalla los endpoints de la API y sus funcionalidades.
+- **Testing**: Se deben implementar pruebas para validar el correcto funcionamiento de los endpoints CRUD y las relaciones entre las entidades.
+- **Autenticación**: Se implementa un sistema básico de autenticación para proteger los endpoints de la API.
+- **Filtros y Paginación**: Se agrega soporte para filtros y paginación en los endpoints de listados.
+- **Manejo de Errores**: Se proporciona un manejo de errores adecuado y mensajes de respuesta claros.
 
-2. **Instalar las dependencias:**
+## Cómo Ejecutar el Proyecto
+1. Clonar el repositorio en tu máquina local.
+2. Ejecutar `composer install` para instalar las dependencias de PHP.
+3. Configurar el archivo `.env` con credenciales de la base de datos.
+4. Ejecutar `php artisan migrate` para aplicar las migraciones.
+5. Carga los datos iniciales usando `php artisan db:seed`.
+6. Inicia el servidor de desarrollo con `php artisan serve`.
 
-   ```bash
-   composer install
-   ```
+## Archivo formato json para importar en postman
+Por favor cargar archivo a postman. Se realizaron request tanto para la lectura, editar, actualizar y eliminar, asi como también se prueban los filtros.
 
-3. **Configurar el archivo `.env`:**
+## Pruebas
+Ejecutar `php artisan test` para realizar todas las pruebas del proyecto y verificar que todo funcione correctamente.
 
-   - Copiar el archivo de ejemplo:
-
-     ```bash
-     cp .env.example .env
-     ```
-
-   - Configurar la conexión a la base de datos en el archivo `.env`.
-
-4. **Generar la clave de la aplicación:**
-
-   ```bash
-   php artisan key:generate
-   ```
-
-5. **Migrar la base de datos:**
-
-   ```bash
-   php artisan migrate
-   ```
-
-6. **Cargar datos iniciales (opcional):**
-
-   ```bash
-   php artisan db:seed
-   ```
-
-## Endpoints
-
-### Autenticación
-
-- **Registrar un usuario:**
-  
-  - **POST** `/api/register`
-  
-  - **Body:**
-    ```json
-    {
-      "name": "John Doe",
-      "email": "john@example.com",
-      "password": "lacasadejuana",
-      "password_confirmation": "lacasadejuana"
-    }
-    ```
-
-- **Iniciar sesión:**
-  
-  - **POST** `/api/login`
-  
-  - **Body:**
-    ```json
-    {
-      "email": "john@example.com",
-      "password": "lacasadejuana"
-    }
-    ```
-
-### Personas
-
-- **Listar personas:**
-
-  - **GET** `/api/personas`
-  
-- **Crear persona:**
-
-  - **POST** `/api/personas`
-  
-  - **Body:**
-    ```json
-    {
-      "nombre": "Ana López",
-      "email": "ana.lopez@example.com",
-      "telefono": "987654321"
-    }
-    ```
-
-- **Actualizar persona:**
-
-  - **PUT** `/api/personas/{id}`
-  
-  - **Body:**
-    ```json
-    {
-      "telefono": "123456789"
-    }
-    ```
-
-- **Eliminar persona:**
-
-  - **DELETE** `/api/personas/{id}`
-
-### Propiedades
-
-- **Listar propiedades:**
-
-  - **GET** `/api/propiedades`
-
-- **Crear propiedad:**
-
-  - **POST** `/api/propiedades`
-  
-  - **Body:**
-    ```json
-    {
-      "direccion": "Calle Falsa 123",
-      "ciudad": "Santiago",
-      "precio": 100000,
-      "descripcion": "Propiedad en excelente ubicación."
-    }
-    ```
-
-- **Actualizar propiedad:**
-
-  - **PUT** `/api/propiedades/{id}`
-  
-  - **Body:**
-    ```json
-    {
-      "precio": 120000
-    }
-    ```
-
-- **Eliminar propiedad:**
-
-  - **DELETE** `/api/propiedades/{id}`
-
-### Solicitudes de Visita
-
-- **Listar solicitudes de visita:**
-
-  - **GET** `/api/solicitudes-visita`
-
-- **Crear solicitud de visita:**
-
-  - **POST** `/api/solicitudes-visita`
-  
-  - **Body:**
-    ```json
-    {
-      "persona_id": 1,
-      "propiedad_id": 1,
-      "fecha_visita": "2024-10-10",
-      "comentarios": "Interesado en conocer el departamento."
-    }
-    ```
-
-- **Actualizar solicitud de visita:**
-
-  - **PUT** `/api/solicitudes-visita/{id}`
-  
-  - **Body:**
-    ```json
-    {
-      "comentarios": "Visita reprogramada."
-    }
-    ```
-
-- **Eliminar solicitud de visita:**
-
-  - **DELETE** `/api/solicitudes-visita/{id}`
