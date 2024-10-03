@@ -7,11 +7,19 @@ use App\Models\Propiedad;
 use App\Models\SolicitudVisita;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-
+use App\Models\User;
 
 class SolicitudVisitaTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Crea un usuario y actúa como él
+        $this->actingAs(User::factory()->create());
+    }
 
     public function test_can_list_solicitudes_visita()
     {
@@ -20,7 +28,7 @@ class SolicitudVisitaTest extends TestCase
         $response = $this->getJson('/api/solicitudes-visita');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(5);
+                 ->assertJsonCount(5,'data');
     }
 
     public function test_can_create_solicitud_visita()

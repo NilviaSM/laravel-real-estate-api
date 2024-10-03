@@ -78,6 +78,15 @@ public function index(Request $request)
     // Eliminar una persona
     public function destroy($id)
     {
-        return Persona::destroy($id);
+        $deleted = Persona::destroy($id);
+    
+        // Verifica si se eliminó
+        if ($deleted) {
+            return response()->json(['message' => 'Persona eliminada correctamente'], 200);
+        }
+    
+        // Si no se encontró la persona, devuelve un mensaje de error
+        return response()->json(['message' => 'Persona no encontrada'], 404);
     }
+    
 }

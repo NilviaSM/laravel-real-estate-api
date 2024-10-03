@@ -3,12 +3,22 @@
 namespace Tests\Feature;
 
 use App\Models\Propiedad;
+use App\Models\User; // Importar el modelo User para la autenticación
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PropiedadTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Crear un usuario y actuar como él
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user); // Autenticar al usuario
+    }
 
     public function test_can_list_propiedades()
     {
@@ -17,7 +27,7 @@ class PropiedadTest extends TestCase
         $response = $this->getJson('/api/propiedades');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(5);
+                 ->assertJsonCount(5,'data');
     }
 
     public function test_can_create_propiedad()

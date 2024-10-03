@@ -3,96 +3,187 @@
 
 ## Descripción
 
-Este proyecto es una API REST desarrollada con Laravel para gestionar propiedades, personas y solicitudes de visita.
+Esta API REST permite gestionar propiedades inmobiliarias, personas y solicitudes de visita. Proporciona operaciones CRUD para cada entidad y garantiza la autenticación de usuarios.
 
 ## Requisitos
 
-Antes de comenzar, asegúrese de tener instalado lo siguiente:
-
-- [PHP](https://www.php.net/downloads) (versión 8.0 o superior)
-- [Composer](https://getcomposer.org/download/) (gestor de dependencias para PHP)
-- [Laravel](https://laravel.com/docs/8.x/installation) (instalado a través de Composer)
-- [MySQL](https://dev.mysql.com/downloads/mysql/) o [MariaDB](https://mariadb.org/download/)
+- PHP >= 8.1
+- Laravel >= 10.10
+- MySQL
 
 ## Instalación
 
-Siga estos pasos para instalar y configurar el proyecto en su entorno local:
-
-1. **Clonar el repositorio**
-
-   Ejecute el siguiente comando en la terminal para clonar el repositorio:
+1. **Clonar el repositorio:**
 
    ```bash
-   git clone https://github.com/NilviaSM/laravel-real-estate-api.git
-   ```
-
-2. **Navegar a la carpeta del proyecto**
-
-   Cambie al directorio del proyecto:
-
-   ```bash
+   git clone https://github.com/NilviaSM/laravel-real-estate-api
    cd laravel-real-estate-api
    ```
 
-3. **Instalar las dependencias**
-
-   Utilice Composer para instalar las dependencias del proyecto:
+2. **Instalar las dependencias:**
 
    ```bash
    composer install
    ```
 
-4. **Configurar el entorno**
+3. **Configurar el archivo `.env`:**
 
-   Copie el archivo `.env.example` a un nuevo archivo `.env` y configure las credenciales de la base de datos:
+   - Copiar el archivo de ejemplo:
 
-   ```bash
-   cp .env.example .env
-   ```
+     ```bash
+     cp .env.example .env
+     ```
 
-   Luego, abra el archivo `.env` y edite las siguientes líneas:
+   - Configurar la conexión a la base de datos en el archivo `.env`.
 
-   ```makefile
-   DB_DATABASE=nombre_de_la_base_de_datos
-   DB_USERNAME=tu_usuario
-   DB_PASSWORD=tu_contraseña
-   ```
-
-5. **Ejecutar el siguiente comando para generar la clave de la aplicación**
+4. **Generar la clave de la aplicación:**
 
    ```bash
    php artisan key:generate
    ```
 
-6. **Ejecutar las migraciones**
-
-   Cree las tablas en la base de datos ejecutando:
+5. **Migrar la base de datos:**
 
    ```bash
-   php artisan migrate --seed
+   php artisan migrate
    ```
 
-   Este comando también ejecutará los seeders para llenar la base de datos con datos de prueba.
-
-7. **Ejecución**
-
-   Para iniciar el servidor de desarrollo de Laravel, ejecute:
+6. **Cargar datos iniciales (opcional):**
 
    ```bash
-   php artisan serve
+   php artisan db:seed
    ```
 
-   Esto abrirá la aplicación en http://127.0.0.1:8000.
+## Endpoints
 
-8. **Uso de Postman**
+### Autenticación
 
-   En la raíz del proyecto, encontrará una colección de Postman llamada `LacasadeJuana-CRUD.postman_collection.json`. Esta colección contiene todas las rutas de la API.
+- **Registrar un usuario:**
+  
+  - **POST** `/api/register`
+  
+  - **Body:**
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "lacasadejuana",
+      "password_confirmation": "lacasadejuana"
+    }
+    ```
 
-   **Cómo usar la colección en Postman:**
+- **Iniciar sesión:**
+  
+  - **POST** `/api/login`
+  
+  - **Body:**
+    ```json
+    {
+      "email": "john@example.com",
+      "password": "lacasadejuana"
+    }
+    ```
 
-   - Abra **Postman**.
-   - Haga clic en **Import** en la esquina superior izquierda.
-   - Seleccione **Upload Files** y elija el archivo `LacasadeJuana-CRUD.postman_collection.json` ubicado en la raíz del proyecto.
-   - Haga clic en **Import**.
+### Personas
 
-   Ahora podrá ver la colección en su Postman y ejecutar todas las rutas de la API directamente.
+- **Listar personas:**
+
+  - **GET** `/api/personas`
+  
+- **Crear persona:**
+
+  - **POST** `/api/personas`
+  
+  - **Body:**
+    ```json
+    {
+      "nombre": "Ana López",
+      "email": "ana.lopez@example.com",
+      "telefono": "987654321"
+    }
+    ```
+
+- **Actualizar persona:**
+
+  - **PUT** `/api/personas/{id}`
+  
+  - **Body:**
+    ```json
+    {
+      "telefono": "123456789"
+    }
+    ```
+
+- **Eliminar persona:**
+
+  - **DELETE** `/api/personas/{id}`
+
+### Propiedades
+
+- **Listar propiedades:**
+
+  - **GET** `/api/propiedades`
+
+- **Crear propiedad:**
+
+  - **POST** `/api/propiedades`
+  
+  - **Body:**
+    ```json
+    {
+      "direccion": "Calle Falsa 123",
+      "ciudad": "Santiago",
+      "precio": 100000,
+      "descripcion": "Propiedad en excelente ubicación."
+    }
+    ```
+
+- **Actualizar propiedad:**
+
+  - **PUT** `/api/propiedades/{id}`
+  
+  - **Body:**
+    ```json
+    {
+      "precio": 120000
+    }
+    ```
+
+- **Eliminar propiedad:**
+
+  - **DELETE** `/api/propiedades/{id}`
+
+### Solicitudes de Visita
+
+- **Listar solicitudes de visita:**
+
+  - **GET** `/api/solicitudes-visita`
+
+- **Crear solicitud de visita:**
+
+  - **POST** `/api/solicitudes-visita`
+  
+  - **Body:**
+    ```json
+    {
+      "persona_id": 1,
+      "propiedad_id": 1,
+      "fecha_visita": "2024-10-10",
+      "comentarios": "Interesado en conocer el departamento."
+    }
+    ```
+
+- **Actualizar solicitud de visita:**
+
+  - **PUT** `/api/solicitudes-visita/{id}`
+  
+  - **Body:**
+    ```json
+    {
+      "comentarios": "Visita reprogramada."
+    }
+    ```
+
+- **Eliminar solicitud de visita:**
+
+  - **DELETE** `/api/solicitudes-visita/{id}`

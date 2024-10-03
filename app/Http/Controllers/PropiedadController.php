@@ -85,6 +85,14 @@ public function index(Request $request)
     // Eliminar una propiedad
     public function destroy($id)
     {
-        return Propiedad::destroy($id);
+        $deleted = Propiedad::destroy($id);
+    
+        // Verifica si se eliminó
+        if ($deleted) {
+            return response()->json(['message' => 'Propiedad eliminada correctamente'], 200);
+        }
+    
+        // Si no se encontró la Propiedad, devuelve un mensaje de error
+        return response()->json(['message' => 'Propiedad no encontrada'], 404);
     }
 }

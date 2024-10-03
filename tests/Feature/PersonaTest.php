@@ -3,23 +3,35 @@
 namespace Tests\Feature;
 
 use App\Models\Persona;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User; // Asegúrate de importar el modelo User
+//use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PersonaTest extends TestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
+
+    protected $user; // Variable para almacenar el usuario autenticado
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Crear un usuario y actuar como él
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
+    }
 
     public function test_can_list_personas()
     {
+        // Crear 5 personas directamente en la prueba
         Persona::factory()->count(5)->create();
 
         $response = $this->getJson('/api/personas');
-
+    
         $response->assertStatus(200)
-                 ->assertJsonCount(5);
+                 ->assertJsonCount(5, 'data');
     }
-
     public function test_can_create_persona()
     {
         $data = [

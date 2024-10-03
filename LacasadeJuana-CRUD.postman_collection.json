@@ -35,6 +35,30 @@
 						"url": "http://127.0.0.1:8000/api/solicitudes-visita"
 					},
 					"response": []
+				},
+				{
+					"name": "ReadRegister",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "ReadFilter",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Tests",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
@@ -59,6 +83,14 @@
 				},
 				{
 					"name": "CreateSolicitudesVisita",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "CreateRegister",
 					"request": {
 						"method": "GET",
 						"header": []
